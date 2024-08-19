@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios de Reparación Willy e Hijos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #fichaModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Servicios de Reparación Willy e Hijos</h1>
+    <button onclick="solicitarModelo('arranque')">Arranque</button>
+    <button onclick="solicitarModelo('alternador')">Alternador</button>
+    <button onclick="mostrarClave()">Cargar Datos</button>
+
+    <div id="overlay"></div>
+
+    <div id="fichaModal">
+        <h2>Gestión de Datos</h2>
+        <label for="tipoModelo">Tipo de Modelo:</label>
+        <select id="tipoModelo">
+            <option value="arranque">Arranque</option>
+            <option value="alternador">Alternador</option>
+        </select><br><br>
+        <label for="modelo">Número de Modelo:</label>
+        <input type="text" id="modelo"><br><br>
+        <label for="falla">Falla:</label>
+        <input type="text" id="falla"><br><br>
+        <button onclick="guardarDatos()">Aceptar</button>
+        <button onclick="cancelar()">Cancelar</button>
+        <button onclick="volverInicio()">Volver</button>
+    </div>
+
+    <script>
+        // Simulación de una base de datos de fallas
+        const fallas = {
+            arranque: {
+                "A123": "Falla en el motor de arranque",
+                "A456": "Desgaste en el rotor",
+                "A789": "Cortocircuito en el sistema eléctrico"
+            },
+            alternador: {
+                "B123": "Pérdida de carga en el alternador",
+                "B456": "Falla en el regulador de voltaje",
+                "B789": "Problema con los rodamientos"
+            }
+        };
+
+        function solicitarModelo(tipo) {
+            const modelo = prompt("Ingrese la numeración del modelo de " + tipo + ":");
+            if (modelo) {
+                const falla = fallas[tipo][modelo];
+                if (falla) {
+                    alert("Modelo: " + modelo + "\nFalla detectada: " + falla);
+                } else {
+                    alert("No se encontró ninguna falla para el modelo " + modelo);
+                }
+            }
+        }
+
+        function mostrarClave() {
+            const clave = prompt("Ingrese la clave de acceso:");
+            if (clave === "1136") { // La clave es 1136
+                mostrarFicha();
+            } else {
+                alert("Clave incorrecta");
+            }
+        }
+
+        function mostrarFicha() {
+            document.getElementById('fichaModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function cancelar() {
+            document.getElementById('fichaModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function volverInicio() {
+            cancelar();
+        }
+
+        function guardarDatos() {
+            const tipo = document.getElementById('tipoModelo').value;
+            const modelo = document.getElementById('modelo').value;
+            const falla = document.getElementById('falla').value;
+            if (modelo && falla) {
+                fallas[tipo][modelo] = falla;
+                alert("Datos guardados para " + tipo + " con modelo " + modelo + ": " + falla);
+                cancelar();
+            } else {
+                alert("Por favor, complete todos los campos");
+            }
+        }
+    </script>
+
+</body>
+</html>
